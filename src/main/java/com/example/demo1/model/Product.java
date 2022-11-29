@@ -5,6 +5,7 @@ public class Product {
     private String name;
     private Double price;
     private Integer quantity;
+    private Category category;
 
     public Product() {
     }
@@ -16,10 +17,25 @@ public class Product {
         this.quantity = quantity;
     }
 
+    public Product(Long id, String name, Double price, Integer quantity, Category category) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.category = category;
+    }
+
     public Product(String name, Double price, Integer quantity) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+    }
+
+    public Product(String name, Double price, Integer quantity, Category category) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.category = category;
     }
 
     public Long getId() {
@@ -52,5 +68,13 @@ public class Product {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

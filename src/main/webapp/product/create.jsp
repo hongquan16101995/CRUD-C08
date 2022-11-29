@@ -25,7 +25,7 @@
 <body>
 <div>
     <h1>Create form</h1>
-    <form action="/products?action=create" method="post">
+    <form method="post">
         <div class="mb-3 mt-3">
             <label for="name" class="form-label">Name</label>
             <input type="text" class="form-control" id="name" placeholder="Enter name" name="name">
@@ -38,8 +38,18 @@
             <label for="quantity" class="form-label">Quantity</label>
             <input type="text" class="form-control" id="quantity" placeholder="Enter quantity" name="quantity">
         </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-control" id="category" name="category">
+                <option>-------</option>
+                <c:forEach items="${categories}" var="c">
+                    <option value="${c.getId()}"><c:out value="${c.getName()}"/></option>
+                </c:forEach>
+
+            </select>
+        </div>
         <button type="submit" class="btn btn-primary">Create</button>
-        <a href="/products">
+        <a href="pcs">
             <button type="button" class="btn btn-secondary">Cancel</button>
         </a>
     </form>

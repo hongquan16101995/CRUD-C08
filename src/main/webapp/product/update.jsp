@@ -43,8 +43,31 @@
                    id="quantity" placeholder="Enter quantity" name="quantity">
         </div>
         <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-control" id="category" name="category">
+
+
+                <c:forEach items="${categories}" var="c">
+                    <c:if test="${c.getId() != product.getCategory().getId()}">
+                        <option value="${c.getId()}"><c:out value="${c.getName()}"/></option>
+                    </c:if>
+                    <c:if test="${c.getId() == product.getCategory().getId()}">
+                        <option selected value="${c.getId()}"><c:out value="${c.getName()}"/></option>
+                    </c:if>
+                </c:forEach>
+<%--                Đỗ minh đức--%>
+                <%--                <option hidden selected--%>
+                <%--                        value="${requestScope["product"].getCategory().getId()}">--%>
+                <%--                    ${requestScope["product"].getCategory().getName()}--%>
+                <%--                </option>--%>
+                <%--                <c:forEach items="${categories}" var="c">--%>
+                <%--                      <option value="${c.getId()}"><c:out value="${c.getName()}"/></option>--%>
+                <%--                </c:forEach>--%>
+            </select>
+        </div>
+        <div class="mb-3">
             <button type="submit" class="btn btn-primary">Update</button>
-            <a href="/products">
+            <a href="pcs">
                 <button type="button" class="btn btn-secondary">Cancel</button>
             </a>
         </div>
