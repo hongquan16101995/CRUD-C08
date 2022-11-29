@@ -36,17 +36,27 @@ public class ProductServiceImpl implements IProductService {
     public void save(Product product) {
         if (product.getId() == null) {
             product.setId(++INDEX);
+            products.add(product);
+        } else {
+            int index = products.indexOf(findById(product.getId()));
+            products.set(index, product);
         }
-        products.add(product);
+
     }
 
     @Override
     public void deleteById(Long id) {
-
+        products.remove(findById(id));
     }
 
     @Override
     public List<Product> findByNameContaining(String name) {
-        return null;
+        List<Product> productSearch = new ArrayList<>();
+        for (Product product : products) {
+            if (product.getName().contains(name)) {
+                productSearch.add(product);
+            }
+        }
+        return productSearch;
     }
 }

@@ -17,38 +17,77 @@
             crossorigin="anonymous"></script>
     <style>
         h1 {
-            margin-left: 450px;
+            margin-left: 500px;
         }
 
         a {
+            color: black;
             text-decoration: none;
+            font-weight: bold;
+        }
+
+        input {
+            border-radius: 4px;
+        }
+
+        form {
+            float: right;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>List product</h1>
-    <button class="btn btn-primary">
-        <a style="color: white; font-weight: bold"
-           href="create-product.jsp">Add new product</a>
-    </button>
+    <h2><c:out value="${message}"/></h2>
+    <a href="create-product.jsp">
+        <button style="margin-bottom: 10px" class="btn btn-primary">
+            Add new product
+        </button>
+    </a>
+    <form action="products?action=search" method="post">
+        <input type="text" name="search" placeholder="Enter name search">
+        <button class="btn btn-primary">Search</button>
+    </form>
     <table class="table table-striped">
         <tr>
             <th>STT</th>
             <th>Name</th>
             <th>Price</th>
             <th>Quantity</th>
+            <th colspan="2" style="text-align: center; width: 25%">Action</th>
         </tr>
         <c:forEach items="${products}" var="p">
             <tr>
                 <td><c:out value="${p.getId()}"/></td>
-                <td><a href="/products?action=detail&id=${p.getId()}"><c:out value="${p.getName()}"/></a></td>
+                <td>
+                    <a href="/products?action=detail&id=${p.getId()}">
+                        <c:out value="${p.getName()}"/>
+                    </a>
+                </td>
                 <td><c:out value="${p.getPrice()}"/></td>
                 <td><c:out value="${p.getQuantity()}"/></td>
+                <td>
+                    <a href="products?action=update&id=${p.getId()}">
+                        <button class="btn btn-warning">
+                            Update
+                        </button>
+                    </a>
+                </td>
+                <td>
+                    <a href="products?action=delete&id=${p.getId()}" onclick="return test('${p.getName()}')">
+                        <button class="btn btn-danger">
+                            Delete
+                        </button>
+                    </a>
+                </td>
             </tr>
         </c:forEach>
     </table>
 </div>
-
 </body>
+<script>
+    function test(name) {
+        return confirm("Bạn có chắc chắn muốn xóa sản phẩm: " + name + "?")
+    }
+</script>
 </html>
