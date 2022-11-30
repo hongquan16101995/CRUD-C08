@@ -62,51 +62,49 @@ public class ProductServlet extends HttpServlet {
 
     private void displayListProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("list-product.jsp");
-        request.setAttribute("products", productService.findAll());
+        request.setAttribute("products", productService.findAll(request));
         requestDispatcher.forward(request, response);
     }
 
     private void displayDetailProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Long id = Long.parseLong(request.getParameter("id"));
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("detail-product.jsp");
-        request.setAttribute("product", productService.findById(id));
+        request.setAttribute("product", productService.findById(request));
         requestDispatcher.forward(request, response);
     }
 
     private void displaySearchProductList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("search");
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("list-product.jsp");
-        request.setAttribute("products", productService.findByNameContaining(name));
+        request.setAttribute("products", productService.findByNameContaining(request));
         requestDispatcher.forward(request, response);
     }
 
-    private void create(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String name = request.getParameter("name");
-        Double price = Double.parseDouble(request.getParameter("price"));
-        Integer quantity = Integer.parseInt(request.getParameter("quantity"));
-        productService.save(new Product(name, price, quantity));
+    private void create(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (productService.save(request)) {
+            HttpSession session = request.getSession();
+            session.setAttribute("message", "Create successfully!");
+        }
         response.sendRedirect("http://localhost:8080/products");
     }
 
     private void updateForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Long id = Long.parseLong(request.getParameter("id"));
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("update-product.jsp");
-        request.setAttribute("product", productService.findById(id));
+        request.setAttribute("product", productService.findById(request));
         requestDispatcher.forward(request, response);
     }
 
     private void update(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Long id = Long.parseLong(request.getParameter("id"));
-        String name = request.getParameter("name");
-        Double price = Double.parseDouble(request.getParameter("price"));
-        Integer quantity = Integer.parseInt(request.getParameter("quantity"));
-        productService.save(new Product(id, name, price, quantity));
+        if (productService.save(request)) {
+            HttpSession session = request.getSession();
+            session.setAttribute("message", "Update successfully!");
+        }
         response.sendRedirect("http://localhost:8080/products");
     }
 
     private void delete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Long id = Long.parseLong(request.getParameter("id"));
-        productService.deleteById(id);
+        if (productService.deleteById(request)) {
+            HttpSession session = request.getSession();
+            session.setAttribute("message", "Delete successfully!");
+        }
         response.sendRedirect("http://localhost:8080/products");
     }
 }

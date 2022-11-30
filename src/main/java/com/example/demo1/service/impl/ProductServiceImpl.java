@@ -1,62 +1,52 @@
 package com.example.demo1.service.impl;
 
+import com.example.demo1.DAO.ProductDAO;
 import com.example.demo1.model.Product;
 import com.example.demo1.service.IProductService;
 
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class ProductServiceImpl implements IProductService {
-    private static ArrayList<Product> products;
-    private static Long INDEX;
+    private final ProductDAO productDAO;
 
-    static {
-        products = new ArrayList<>();
-        products.add(new Product(1L, "Civic", 1234567D, 20));
-        products.add(new Product(2L, "City", 1034567D, 30));
-        INDEX = products.get(products.size() - 1).getId();
+    public ProductServiceImpl() {
+        productDAO = new ProductDAO();
     }
 
     @Override
-    public List<Product> findAll() {
-        return products;
+    public List<Product> findAll(HttpServletRequest request) {
+        return productDAO.findAll();
     }
 
     @Override
-    public Product findById(Long id) {
-        for (Product p : products) {
-            if (p.getId().equals(id)) {
-                return p;
-            }
-        }
-        return null;
+    public Product findById(HttpServletRequest request) {
+        Long id = Long.parseLong(request.getParameter("id"));
+        return productDAO.findProductById(id);
     }
 
     @Override
-    public void save(Product product) {
-        if (product.getId() == null) {
-            product.setId(++INDEX);
-            products.add(product);
+    public boolean save(HttpServletRequest request) {
+        String id = request.getParameter("id");
+        String name = request.getParameter("name");
+        Double price = Double.parseDouble(request.getParameter("price"));
+        Integer quantity = Integer.parseInt(request.getParameter("quantity"));
+        if (id == null) {
+            return productDAO.createProduct(new Product(name, price, quantity));
         } else {
-            int index = products.indexOf(findById(product.getId()));
-            products.set(index, product);
+            return productDAO.updateProduct(new Product(Long.parseLong(id),name,price, quantity));
         }
-
     }
 
     @Override
-    public void deleteById(Long id) {
-        products.remove(findById(id));
+    public boolean deleteById(HttpServletRequest request) {
+        Long id = Long.parseLong(request.getParameter("id"));
+        return productDAO.deleteProduct(id);
     }
 
     @Override
-    public List<Product> findByNameContaining(String name) {
-        List<Product> productSearch = new ArrayList<>();
-        for (Product product : products) {
-            if (product.getName().contains(name)) {
-                productSearch.add(product);
-            }
-        }
-        return productSearch;
+    public List<Product> findByNameContaining(HttpServletRequest request) {
+        String name = request.getParameter("search");
+        return productDAO.findAllByNameContaining(name);
     }
 }

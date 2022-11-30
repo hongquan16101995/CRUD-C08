@@ -24,6 +24,9 @@ tasks.withType(JavaCompile) {
 dependencies {
     compileOnly('javax.servlet:javax.servlet-api:4.0.1')
 
+    //thư viện JDBC, tải từ maven repository
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.23'
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }

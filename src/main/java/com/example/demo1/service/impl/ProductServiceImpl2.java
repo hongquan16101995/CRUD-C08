@@ -4,6 +4,7 @@ import com.example.demo1.model.Category;
 import com.example.demo1.model.Product;
 import com.example.demo1.service.IProductService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,58 +27,61 @@ public class ProductServiceImpl2 implements IProductService {
     }
 
     @Override
-    public List<Product> findAll() {
-        return products;
+    public List<Product> findAll(HttpServletRequest request) {
+//        return products;
+        return null;
     }
 
     public List<Category> findCategories() {
         return categories;
     }
 
-    public Category findCategoryById(Long id) {
-        for (Category c : categories) {
-            if (c.getId().equals(id)) {
-                return c;
-            }
-        }
+    public Category findCategoryById(HttpServletRequest request) {
+//        for (Category c : categories) {
+//            if (c.getId().equals(id)) {
+//                return c;
+//            }
+//        }
         return null;
     }
 
     @Override
-    public Product findById(Long id) {
-        for (Product p : products) {
-            if (p.getId().equals(id)) {
-                return p;
-            }
-        }
+    public Product findById(HttpServletRequest request) {
+//        for (Product p : products) {
+//            if (p.getId().equals(id)) {
+//                return p;
+//            }
+//        }
         return null;
     }
 
     @Override
-    public void save(Product product) {
-        if (product.getId() == null) {
-            product.setId(++INDEX);
-            products.add(product);
-        } else {
-            int index = products.indexOf(findById(product.getId()));
-            products.set(index, product);
-        }
-
+    public boolean save(HttpServletRequest request) {
+//        if (product.getId() == null) {
+//            product.setId(++INDEX);
+//            products.add(product);
+//        } else {
+//            int index = products.indexOf(findById(product.getId()));
+//            products.set(index, product);
+//        }
+        return false;
     }
 
     @Override
-    public void deleteById(Long id) {
-        products.remove(findById(id));
+    public boolean deleteById(HttpServletRequest request) {
+//        products.remove(findById(id));
+        return false;
     }
 
     @Override
-    public List<Product> findByNameContaining(String name) {
-        List<Product> productSearch = new ArrayList<>();
-        for (Product product : products) {
-            if (product.getName().toLowerCase().contains(name.toLowerCase())) {
-                productSearch.add(product);
-            }
-        }
-        return productSearch;
+    public List<Product> findByNameContaining(HttpServletRequest request) {
+//        List<Product> productSearch = new ArrayList<>();
+//        for (Product product : products) {
+//            if (product.getName().toLowerCase().contains(name.toLowerCase())) {
+//                productSearch.add(product);
+//            }
+//        }
+//        return productSearch;
+        return null;
     }
 }

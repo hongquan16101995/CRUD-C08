@@ -1,13 +1,14 @@
 package com.example.demo1.service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface ICoreCRUDService<E, K> {
-    List<E> findAll();
+    List<E> findAll(HttpServletRequest request);
 
-    E findById(K id);
+    E findById(HttpServletRequest request);
 
-    void save(E e);
+    boolean save(HttpServletRequest request);
 
-    void deleteById(K id);
+    boolean deleteById(HttpServletRequest request);
 }
