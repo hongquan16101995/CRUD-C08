@@ -34,6 +34,7 @@
             float: right;
         }
     </style>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <div class="container">
@@ -74,7 +75,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href="products?action=delete&id=${p.getId()}" onclick="return test('${p.getName()}')">
+                    <a href="products?action=delete&id=${p.getId()}" onclick="return a(${p.getId()}, ${p.getName()})">
                         <button class="btn btn-danger">
                             Delete
                         </button>
@@ -86,8 +87,30 @@
 </div>
 </body>
 <script>
-    function test(name) {
-        return confirm("Bạn có chắc chắn muốn xóa sản phẩm: " + name + "?")
+    function a(id, name) {
+        Swal.fire({
+            title: 'Do you want to delete product: ' + name + ' ?',
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Delete',
+            denyButtonText: `Cancel`,
+            timer: 5000
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Delete successfully!',
+                    timer: 2500
+                })
+                check(id)
+            } else if (result.isDenied) {
+            }
+        })
+        return false;
+    }
+
+    function check(id) {
+        window.location.href = "http://localhost:8080/products?action=delete&id=" + id;
     }
 </script>
 </html>
+

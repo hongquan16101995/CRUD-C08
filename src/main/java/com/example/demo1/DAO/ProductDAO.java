@@ -24,14 +24,7 @@ public class ProductDAO {
         List<Product> products = new ArrayList<>();
         try(PreparedStatement preparedStatement =
                     connection.prepareStatement(SELECT_ALL_PRODUCTS)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                Long id = Long.parseLong(resultSet.getString("id"));
-                String name = resultSet.getString("name");
-                Double price = Double.parseDouble(resultSet.getString("price"));
-                Integer quantity = Integer.parseInt(resultSet.getString("quantity"));
-                products.add(new Product(id, name, price, quantity));
-            }
+            getListProduct(products, preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -98,17 +91,21 @@ public class ProductDAO {
         try(PreparedStatement preparedStatement =
                     connection.prepareStatement(SELECT_PRODUCT_BY_NAME)) {
             preparedStatement.setString(1, "%" + nameSearch + "%");
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                Long id = Long.parseLong(resultSet.getString("id"));
-                String name = resultSet.getString("name");
-                Double price = Double.parseDouble(resultSet.getString("price"));
-                Integer quantity = Integer.parseInt(resultSet.getString("quantity"));
-                products.add(new Product(id, name, price, quantity));
-            }
+            getListProduct(products, preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return products;
+    }
+
+    private void getListProduct(List<Product> products, PreparedStatement preparedStatement) throws SQLException {
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            Long id = Long.parseLong(resultSet.getString("id"));
+            String name = resultSet.getString("name");
+            Double price = Double.parseDouble(resultSet.getString("price"));
+            Integer quantity = Integer.parseInt(resultSet.getString("quantity"));
+            products.add(new Product(id, name, price, quantity));
+        }
     }
 }

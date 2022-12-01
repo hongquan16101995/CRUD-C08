@@ -1,5 +1,7 @@
 package com.example.demo1.service.impl;
 
+import com.example.demo1.DAO.CategoryDAO;
+import com.example.demo1.DAO.ProductCategoryDAO;
 import com.example.demo1.model.Category;
 import com.example.demo1.model.Product;
 import com.example.demo1.service.IProductService;
@@ -12,6 +14,14 @@ public class ProductServiceImpl2 implements IProductService {
     private static ArrayList<Product> products;
     private static ArrayList<Category> categories;
     private static Long INDEX;
+
+    private ProductCategoryDAO productCategoryDAO;
+    private CategoryDAO categoryDAO;
+
+    public ProductServiceImpl2() {
+        productCategoryDAO = new ProductCategoryDAO();
+        categoryDAO = new CategoryDAO();
+    }
 
     static {
         categories = new ArrayList<>();
@@ -28,12 +38,11 @@ public class ProductServiceImpl2 implements IProductService {
 
     @Override
     public List<Product> findAll(HttpServletRequest request) {
-//        return products;
-        return null;
+        return productCategoryDAO.findAll();
     }
 
     public List<Category> findCategories() {
-        return categories;
+        return categoryDAO.findAll();
     }
 
     public Category findCategoryById(HttpServletRequest request) {
@@ -57,10 +66,16 @@ public class ProductServiceImpl2 implements IProductService {
 
     @Override
     public boolean save(HttpServletRequest request) {
-//        if (product.getId() == null) {
-//            product.setId(++INDEX);
-//            products.add(product);
-//        } else {
+        String productId = request.getParameter("id");
+        String name = request.getParameter("name");
+        Double price = Double.parseDouble(request.getParameter("price"));
+        Integer quantity = Integer.parseInt(request.getParameter("quantity"));
+        Long categoryId = Long.parseLong(request.getParameter("category"));
+        if (productId == null) {
+            return productCategoryDAO.createProduct(new Product(name, price,
+                    quantity, categoryDAO.findCategoryById(categoryId)));
+        }
+//        else {
 //            int index = products.indexOf(findById(product.getId()));
 //            products.set(index, product);
 //        }

@@ -93,11 +93,10 @@ public class ProductCategoryServlet extends HttpServlet {
     }
 
     private void create(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String name = request.getParameter("name");
-        Double price = Double.parseDouble(request.getParameter("price"));
-        Integer quantity = Integer.parseInt(request.getParameter("quantity"));
-        Long categoryId = Long.parseLong(request.getParameter("category"));
-        productService.save(request);
+        if (productService.save(request)) {
+            HttpSession session = request.getSession();
+            session.setAttribute("message", "Create successfully!");
+        }
         response.sendRedirect("http://localhost:8080/pcs");
     }
 
