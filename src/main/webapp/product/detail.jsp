@@ -47,7 +47,7 @@
             <td><c:out value="${product.getCategory().getName()}"/></td>
         </tr>
     </table>
-    <a href="/products">
+    <a href="/pcs">
         <button class="btn btn-secondary">
             Back
         </button>

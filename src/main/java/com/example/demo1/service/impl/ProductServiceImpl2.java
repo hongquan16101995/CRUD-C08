@@ -61,6 +61,7 @@ public class ProductServiceImpl2 implements IProductService {
 //                return p;
 //            }
 //        }
+        productCategoryDAO.demoTransaction();
         return null;
     }
 

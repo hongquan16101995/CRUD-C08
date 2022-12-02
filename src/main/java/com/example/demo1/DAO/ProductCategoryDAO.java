@@ -17,6 +17,10 @@ public class ProductCategoryDAO {
     private final String SELECT_ALL_PRODUCTS = "select * from product;";
     private final String INSERT_PRODUCTS = "insert into product(name, price, quantity, category_id)" +
             "value (?,?,?,?);";
+    private final String INSERT_PRODUCTS1 = "insert into product(name, price, quantity, category_id)" +
+            "values ('C0822I1', 11111, 11, 1);";
+    private final String INSERT_PRODUCTS2 = "insert into product(name, price, quantity, category_id)" +
+            "values ('demo2', 11411, 41, 5);";
 
     public ProductCategoryDAO() {
         connection = MyConnection.getConnection();
@@ -55,5 +59,24 @@ public class ProductCategoryDAO {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public void demoTransaction() {
+        try (PreparedStatement preparedStatement =
+                connection.prepareStatement(INSERT_PRODUCTS1);
+             PreparedStatement preparedStatement1 =
+                     connection.prepareStatement(INSERT_PRODUCTS2);) {
+//            connection.setAutoCommit(false);
+            preparedStatement.executeUpdate();
+            preparedStatement1.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException sql) {
+                e.printStackTrace();
+            }
+            e.printStackTrace();
+        }
     }
 }
