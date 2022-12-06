@@ -91,6 +91,7 @@ public class ProductServiceImpl2 implements IProductService {
 
     @Override
     public List<Product> findByNameContaining(HttpServletRequest request) {
+        String name = request.getParameter("search");
 //        List<Product> productSearch = new ArrayList<>();
 //        for (Product product : products) {
 //            if (product.getName().toLowerCase().contains(name.toLowerCase())) {
@@ -98,6 +99,8 @@ public class ProductServiceImpl2 implements IProductService {
 //            }
 //        }
 //        return productSearch;
-        return null;
+        return productCategoryDAO.findAllByName(name);
     }
+
+    public void display() {}
 }

@@ -4,10 +4,8 @@ import com.example.demo1.connection.MyConnection;
 import com.example.demo1.model.Category;
 import com.example.demo1.model.Product;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +13,7 @@ public class ProductCategoryDAO {
     private final Connection connection;
     private final CategoryDAO categoryDAO;
     private final String SELECT_ALL_PRODUCTS = "select * from product;";
+    private final String SELECT_ALL_PRODUCTS_BY_NAME = "select * from product where name like ?;";
     private final String INSERT_PRODUCTS = "insert into product(name, price, quantity, category_id)" +
             "value (?,?,?,?);";
     private final String INSERT_PRODUCTS1 = "insert into product(name, price, quantity, category_id)" +
@@ -31,6 +30,27 @@ public class ProductCategoryDAO {
         List<Product> products = new ArrayList<>();
         try (PreparedStatement preparedStatement =
                      connection.prepareStatement(SELECT_ALL_PRODUCTS)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Long id = resultSet.getLong("id");
+                String name = resultSet.getString("name");
+                Double price = resultSet.getDouble("price");
+                Integer quantity = resultSet.getInt("quantity");
+                Long categoryId = resultSet.getLong("category_id");
+                Category category = categoryDAO.findCategoryById(categoryId);
+                products.add(new Product(id, name, price, quantity, category));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+
+    public List<Product> findAllByName(String search) {
+        List<Product> products = new ArrayList<>();
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(SELECT_ALL_PRODUCTS_BY_NAME)) {
+            preparedStatement.setString(1, "%" + search + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Long id = resultSet.getLong("id");

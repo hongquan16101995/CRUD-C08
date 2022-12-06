@@ -1,5 +1,6 @@
 package com.example.demo1.controller;
 
+import com.example.demo1.DAO.ProductCategoryDAO;
 import com.example.demo1.model.Category;
 import com.example.demo1.model.Product;
 import com.example.demo1.service.impl.ProductServiceImpl;
@@ -14,10 +15,12 @@ import java.util.List;
 @WebServlet(name = "ProductCategoryServlet", value = "/pcs")
 public class ProductCategoryServlet extends HttpServlet {
     private ProductServiceImpl2 productService;
+    private ProductCategoryDAO productCategoryDAO;
 
     @Override
     public void init() {
         productService = new ProductServiceImpl2();
+        productCategoryDAO = new ProductCategoryDAO();
     }
 
     @Override
@@ -63,6 +66,8 @@ public class ProductCategoryServlet extends HttpServlet {
                 displaySearchProductList(request, response);
                 break;
         }
+
+
     }
 
     private void displayListProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
